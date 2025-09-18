@@ -58,26 +58,17 @@ export class UserController {
 
   static async createUser(req: Request, res: Response): Promise<void> {
     try {
-      const { name, email }: CreateUserInput = req.body;
+      const { name }: CreateUserInput = req.body;
 
-      if (!name || !email) {
+      if (!name) {
         res.status(400).json({
           success: false,
-          message: 'Nome e email são obrigatórios'
+          message: 'Nome é obrigatório'
         });
         return;
       }
 
-      const existingUser = await UserModel.findByEmail(email);
-      if (existingUser) {
-        res.status(409).json({
-          success: false,
-          message: 'Email já está em uso'
-        });
-        return;
-      }
-
-      const newUser = await UserModel.create({ name, email });
+      const newUser = await UserModel.create({ name });
       
       res.status(201).json({
         success: true,
@@ -113,17 +104,6 @@ export class UserController {
           message: 'Usuário não encontrado'
         });
         return;
-      }
-
-      if (userData.email) {
-        const userWithEmail = await UserModel.findByEmail(userData.email);
-        if (userWithEmail && userWithEmail.id !== id) {
-          res.status(409).json({
-            success: false,
-            message: 'Email já está em uso'
-          });
-          return;
-        }
       }
 
       const updatedUser = await UserModel.update(id, userData);

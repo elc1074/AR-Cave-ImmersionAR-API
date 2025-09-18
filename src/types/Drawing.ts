@@ -8,9 +8,8 @@ export interface Drawing {
 }
 
 export interface CreateDrawingInput {
-  user_id: number;
   dados: any;
-  cor?: string; // Cor é opcional na criação
+  cor?: string; // Cor é opcional na criação (user_id será automático)
 }
 
 export interface UpdateDrawingInput {

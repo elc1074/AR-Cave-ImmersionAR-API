@@ -1,6 +1,7 @@
 import AppDataSource from '../config/database';
 import { Drawing } from '../entities/Drawing';
 import { CreateDrawingInput, UpdateDrawingInput } from '../types/Drawing';
+import { MASTER_USER_ID } from '../seeders/masterUser';
 
 const drawingRepository = () => AppDataSource.getRepository(Drawing);
 
@@ -29,7 +30,7 @@ export class DrawingModel {
 
   static async create(drawingData: CreateDrawingInput): Promise<Drawing> {
     const drawing = drawingRepository().create({
-      user_id: drawingData.user_id,
+      user_id: MASTER_USER_ID, // Sempre usar o usuário master
       dados: drawingData.dados,
       cor: drawingData.cor
     });

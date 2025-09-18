@@ -9,10 +9,7 @@ router.get('/', DrawingController.getAllDrawings);
 // GET /api/drawings/:id - Obter desenho por ID
 router.get('/:id', DrawingController.getDrawingById);
 
-// GET /api/drawings/user/:userId - Obter desenhos por usuário
-router.get('/user/:userId', DrawingController.getDrawingsByUserId);
-
-// POST /api/drawings - Criar novo desenho
+// POST /api/drawings - Criar novo desenho (automaticamente para usuário master)
 router.post('/', DrawingController.createDrawing);
 
 // PUT /api/drawings/:id - Atualizar desenho

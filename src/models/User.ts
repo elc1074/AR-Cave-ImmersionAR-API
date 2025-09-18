@@ -20,12 +20,6 @@ export class UserModel {
     });
   }
 
-  static async findByEmail(email: string): Promise<User | null> {
-    return await userRepository().findOne({ 
-      where: { email } 
-    });
-  }
-
   static async create(userData: CreateUserInput): Promise<User> {
     const user = userRepository().create(userData);
     return await userRepository().save(user);

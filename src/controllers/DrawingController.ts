@@ -97,28 +97,18 @@ export class DrawingController {
 
   static async createDrawing(req: Request, res: Response): Promise<void> {
     try {
-      const { user_id, dados, cor }: CreateDrawingInput = req.body;
+      const { dados, cor }: CreateDrawingInput = req.body;
 
       // Validações básicas
-      if (!user_id || !dados) {
+      if (!dados) {
         res.status(400).json({
           success: false,
-          message: 'user_id e dados são obrigatórios'
+          message: 'dados são obrigatórios'
         });
         return;
       }
 
-      // Verificar se o usuário existe
-      const user = await UserModel.findById(user_id);
-      if (!user) {
-        res.status(404).json({
-          success: false,
-          message: 'Usuário não encontrado'
-        });
-        return;
-      }
-
-      const newDrawing = await DrawingModel.create({ user_id, dados, cor });
+      const newDrawing = await DrawingModel.create({ dados, cor });
       
       res.status(201).json({
         success: true,
