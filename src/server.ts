@@ -1,51 +1,238 @@
-import 'reflect-metadata';
-import App from './app';
-import { connectDatabase } from './config/database';
+import fastify from 'fastify';
+import { supabase } from './supabaseConnection';
+import { CreateDrawingInput, UpdateDrawingInput } from './types/Drawing';
+import { CreateUserInput } from './types/User';
 import dotenv from 'dotenv';
 
 // Carregar variáveis de ambiente
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const app = fastify();
 
-async function startServer(): Promise<void> {
-  try {
-    await connectDatabase();
-    
-    const app = new App();
-    
-    app.app.listen(PORT, () => {
-      console.log(`🚀 Servidor rodando na porta ${PORT}`);
-      console.log(`📋 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🌐 URL: http://localhost:${PORT}`);
-      console.log(`📚 API Docs: http://localhost:${PORT}/api`);
-      console.log(`🏥 Health Check: http://localhost:${PORT}/api/health`);
-    });
-    
-  } catch (error) {
-    console.error('❌ Erro ao iniciar o servidor:', error);
-    process.exit(1);
-  }
-}
+app.get('/users', async () => {
+   try {
+        const { data, error } = await supabase.from('users').select('*');
+        return { value: data };
+   } catch (error){
+      console.error('Error fetching users:', error);
+      throw error;
+   }
 
-process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM recebido. Desligando servidor...');
-  process.exit(0);
 });
 
-process.on('SIGINT', () => {
-  console.log('🛑 SIGINT recebido. Desligando servidor...');
-  process.exit(0);
+app.post('/users', async (request, reply) => {
+    try { 
+        const { name } = request.body as { name: string };
+        const { data, error } = await supabase.from('users').insert([{ name }]).select();
+        if (error) throw error;
+        reply.code(201).send({ value: data });
+    } catch (error) {
+        console.error('Error creating user:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+// Rota para buscar todos os desenhos
+app.get('/drawings', async (request, reply) => {
+    try {
+        const { data, error } = await supabase
+            .from('drawings')
+            .select(`
+                id,
+                user_id,
+                dados,
+                cor,
+                created_at,
+                updated_at,
+                users (
+                    id,
+                    name
+                )
+            `);
+        
+        if (error) throw error;
+        
+        reply.code(200).send({ value: data });
+    } catch (error) {
+        console.error('Error fetching drawings:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
 });
 
-process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
-  process.exit(1);
+// Rota para buscar desenhos por usuário
+app.get('/drawings/user/:userId', async (request, reply) => {
+    try {
+        const { userId } = request.params as { userId: string };
+        
+        const { data, error } = await supabase
+            .from('drawings')
+            .select(`
+                id,
+                user_id,
+                dados,
+                cor,
+                created_at,
+                updated_at,
+                users (
+                    id,
+                    name
+                )
+            `)
+            .eq('user_id', userId);
+        
+        if (error) throw error;
+        
+        reply.code(200).send({ value: data });
+    } catch (error) {
+        console.error('Error fetching user drawings:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
 });
 
-startServer();
+// Rota para criar um novo desenho
+app.post('/drawings', async (request, reply) => {
+    try {
+        const { user_id, dados, cor } = request.body as {
+            user_id: number;
+            dados: any;
+            cor?: string;
+        };
+
+        // Verificar se o usuário existe
+        const { data: userExists, error: userError } = await supabase
+            .from('users')
+            .select('id')
+            .eq('id', user_id)
+            .single();
+
+        if (userError || !userExists) {
+            reply.code(404).send({ error: 'Usuário não encontrado' });
+            return;
+        }
+
+        const { data, error } = await supabase
+            .from('drawings')
+            .insert([{
+                user_id,
+                dados,
+                cor: cor || '#000000' // cor padrão se não fornecida
+            }])
+            .select(`
+                id,
+                user_id,
+                dados,
+                cor,
+                created_at,
+                updated_at,
+                users (
+                    id,
+                    name
+                )
+            `);
+
+        if (error) throw error;
+
+        reply.code(201).send({ value: data });
+    } catch (error) {
+        console.error('Error creating drawing:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// Rota para atualizar um desenho
+app.put('/drawings/:id', async (request, reply) => {
+    try {
+        const { id } = request.params as { id: string };
+        const { dados, cor } = request.body as {
+            dados?: any;
+            cor?: string;
+        };
+
+        const updateData: any = {};
+        if (dados !== undefined) updateData.dados = dados;
+        if (cor !== undefined) updateData.cor = cor;
+        updateData.updated_at = new Date().toISOString();
+
+        const { data, error } = await supabase
+            .from('drawings')
+            .update(updateData)
+            .eq('id', id)
+            .select(`
+                id,
+                user_id,
+                dados,
+                cor,
+                created_at,
+                updated_at,
+                users (
+                    id,
+                    name
+                )
+            `);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            reply.code(404).send({ error: 'Desenho não encontrado' });
+            return;
+        }
+
+        reply.code(200).send({ value: data });
+    } catch (error) {
+        console.error('Error updating drawing:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// Rota para deletar um desenho
+app.delete('/drawings/:id', async (request, reply) => {
+    try {
+        const { id } = request.params as { id: string };
+
+        const { data, error } = await supabase
+            .from('drawings')
+            .delete()
+            .eq('id', id)
+            .select();
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            reply.code(404).send({ error: 'Desenho não encontrado' });
+            return;
+        }
+
+        reply.code(200).send({ message: 'Desenho deletado com sucesso' });
+    } catch (error) {
+        console.error('Error deleting drawing:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// Inicialização do servidor
+const start = async () => {
+    try {
+        const port = process.env.PORT || 3000;
+        const host = process.env.HOST || 'localhost';
+        
+        await app.listen({ 
+            port: Number(port), 
+            host: host 
+        });
+        
+        console.log(`🚀 Servidor rodando em http://${host}:${port}`);
+        console.log(`📊 Rotas disponíveis:`);
+        console.log(`  GET    /users          - Listar usuários`);
+        console.log(`  POST   /users          - Criar usuário`);
+        console.log(`  GET    /drawings       - Listar todos os desenhos`);
+        console.log(`  GET    /drawings/user/:userId - Listar desenhos por usuário`);
+        console.log(`  POST   /drawings       - Criar novo desenho`);
+        console.log(`  PUT    /drawings/:id   - Atualizar desenho`);
+        console.log(`  DELETE /drawings/:id   - Deletar desenho`);
+    } catch (err) {
+        console.error('❌ Erro ao iniciar servidor:', err);
+        process.exit(1);
+    }
+};
+
+start();

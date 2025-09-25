@@ -1,0 +1,375 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-09-25T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_get_users",
+      "_type": "request",
+      "parentId": "fld_users",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/users",
+      "name": "Listar Usuários",
+      "description": "Lista todos os usuários cadastrados",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1695600000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_create_user",
+      "_type": "request",
+      "parentId": "fld_users",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/users",
+      "name": "Criar Usuário",
+      "description": "Cria um novo usuário",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"João Silva\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1695590000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_get_drawings",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings",
+      "name": "Listar Todos os Desenhos",
+      "description": "Lista todos os desenhos com informações do usuário",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1695600000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_get_user_drawings",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings/user/{{ _.user_id }}",
+      "name": "Listar Desenhos por Usuário",
+      "description": "Lista desenhos de um usuário específico",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1695590000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_create_drawing",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings",
+      "name": "Criar Desenho",
+      "description": "Cria um novo desenho",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"user_id\": 1,\n  \"dados\": {\n    \"tipo\": \"linha\",\n    \"coordenadas\": [\n      {\"x\": 10, \"y\": 20},\n      {\"x\": 30, \"y\": 40},\n      {\"x\": 50, \"y\": 60}\n    ]\n  },\n  \"cor\": \"#FF5733\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1695580000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_create_drawing_circle",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings",
+      "name": "Criar Desenho - Círculo",
+      "description": "Exemplo de desenho em formato de círculo",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"user_id\": 1,\n  \"dados\": {\n    \"tipo\": \"circulo\",\n    \"centro\": {\"x\": 50, \"y\": 50},\n    \"raio\": 25,\n    \"propriedades\": {\n      \"preenchimento\": true,\n      \"transparencia\": 0.8\n    }\n  },\n  \"cor\": \"#00A8FF\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1695575000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_create_drawing_polygon",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings",
+      "name": "Criar Desenho - Polígono",
+      "description": "Exemplo de desenho em formato de polígono",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"user_id\": 1,\n  \"dados\": {\n    \"tipo\": \"poligono\",\n    \"vertices\": [\n      {\"x\": 10, \"y\": 10},\n      {\"x\": 50, \"y\": 10},\n      {\"x\": 30, \"y\": 40}\n    ],\n    \"fechado\": true\n  },\n  \"cor\": \"#7ED321\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1695570000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_update_drawing",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings/{{ _.drawing_id }}",
+      "name": "Atualizar Desenho",
+      "description": "Atualiza dados ou cor de um desenho existente",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"dados\": {\n    \"tipo\": \"linha_modificada\",\n    \"coordenadas\": [\n      {\"x\": 100, \"y\": 200},\n      {\"x\": 300, \"y\": 400}\n    ]\n  },\n  \"cor\": \"#9C88FF\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1695560000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_update_drawing_color_only",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings/{{ _.drawing_id }}",
+      "name": "Atualizar Cor do Desenho",
+      "description": "Atualiza apenas a cor do desenho",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cor\": \"#FF6B6B\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1695555000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_delete_drawing",
+      "_type": "request",
+      "parentId": "fld_drawings",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "url": "{{ _.base_url }}/drawings/{{ _.drawing_id }}",
+      "name": "Deletar Desenho",
+      "description": "Remove um desenho do banco de dados",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1695550000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_users",
+      "_type": "request_group",
+      "parentId": "wrk_ar_cave_api",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "name": "👥 Usuários",
+      "description": "Rotas para gerenciamento de usuários",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1695600000000
+    },
+    {
+      "_id": "fld_drawings",
+      "_type": "request_group",
+      "parentId": "wrk_ar_cave_api",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "name": "🎨 Desenhos",
+      "description": "Rotas para gerenciamento de desenhos",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1695590000000
+    },
+    {
+      "_id": "wrk_ar_cave_api",
+      "_type": "workspace",
+      "parentId": null,
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "name": "AR Cave Immersion API",
+      "description": "API para gerenciamento de usuários e desenhos do projeto AR Cave Immersion",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_ar_cave_api",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1695600000000
+    },
+    {
+      "_id": "env_development",
+      "_type": "environment",
+      "parentId": "env_base",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "name": "Development",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "user_id": "1",
+        "drawing_id": "1"
+      },
+      "dataPropertyOrder": {
+        "base_url": 1,
+        "user_id": 2,
+        "drawing_id": 3
+      },
+      "color": "#7d69cb",
+      "isPrivate": false,
+      "metaSortKey": 1695600000000
+    },
+    {
+      "_id": "env_production",
+      "_type": "environment",
+      "parentId": "env_base",
+      "modified": 1695600000000,
+      "created": 1695600000000,
+      "name": "Production",
+      "data": {
+        "base_url": "https://sua-api-em-producao.com",
+        "user_id": "1",
+        "drawing_id": "1"
+      },
+      "dataPropertyOrder": {
+        "base_url": 1,
+        "user_id": 2,
+        "drawing_id": 3
+      },
+      "color": "#d9534f",
+      "isPrivate": false,
+      "metaSortKey": 1695610000000
+    }
+  ]
+}
