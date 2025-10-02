@@ -3,11 +3,13 @@ import { supabase } from './supabaseConnection';
 import { CreateDrawingInput, UpdateDrawingInput } from './types/Drawing';
 import { CreateUserInput } from './types/User';
 import dotenv from 'dotenv';
+import fastifyCors from "@fastify/cors";
 
 // Carregar variáveis de ambiente
 dotenv.config();
 
 const app = fastify();
+
 
 app.get('/users', async () => {
    try {
@@ -211,6 +213,9 @@ app.delete('/drawings/:id', async (request, reply) => {
 
 // Inicialização do servidor
 const start = async () => {
+    await app.register(fastifyCors, {
+        origin: true,
+    });
     try {
         const port = process.env.PORT || 3000;
         const host = process.env.HOST || 'localhost';
