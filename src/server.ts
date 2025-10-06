@@ -218,7 +218,7 @@ const start = async () => {
     });
     try {
         const port = process.env.PORT || 3000;
-        const host = process.env.HOST || 'localhost';
+        const host = '0.0.0.0';
         
         await app.listen({ 
             port: Number(port), 
