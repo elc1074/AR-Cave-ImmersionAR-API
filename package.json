@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "API for AR Cave Immersion with Users and Drawings",
   "main": "dist/server.js",
+  "engine":{
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
